@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="sq">
+<head>
+  <meta charset="UTF-8">
+  <title>Faturë Konvertimi</title>
+  <style>
+    body { font-family: sans-serif; padding: 20px; background: #f4f4f4; }
+    input, button { margin: 10px 0; padding: 8px; font-size: 16px; }
+    .fature { margin-top: 20px; background: white; padding: 15px; border: 1px solid #ccc; width: 300px; }
+    .fature h3 { margin-top: 0; }
+  </style>
+</head>
+<body>
+  <h2>Konvertues Euro → Dollar</h2>
+
+  <label for="emri">Emri i klientit:</label>
+  <input type="text" id="emri" placeholder="p.sh. Arsilda Printzian" />
+
+  <label for="euro">Shuma në Euro:</label>
+  <input type="number" id="euro" placeholder="p.sh. 100" />
+
+  <button onclick="gjeneroFature()">Gjenero Faturën</button>
+
+  <div class="fature" id="fatura" style="display:none;"></div>
+
+  <script>
+    function gjeneroFature() {
+      let emri = document.getElementById("emri").value;
+      let euro = parseFloat(document.getElementById("euro").value);
+      let kursi = 1.07; // shembull kursi: 1 Euro = 1.07 Dollar
+      let dollar = euro * kursi;
+
+      let data = new Date().toLocaleDateString("sq-AL");
+
+      let faturaHTML = `
+        <h3>Faturë Konvertimi</h3>
+        <p><strong>Emri:</strong> ${emri}</p>
+        <p><strong>Data:</strong> ${data}</p>
+        <p><strong>Shuma në Euro:</strong> €${euro.toFixed(2)}</p>
+        <p><strong>Kursi:</strong> 1 Euro = $${kursi}</p>
+        <p><strong>Shuma në Dollar:</strong> $${dollar.toFixed(2)}</p>
+        <hr>
+        <p>Faleminderit për përdorimin e konvertuesit tonë!</p>
+      `;
+
+      let faturaDiv = document.getElementById("fatura");
+      faturaDiv.innerHTML = faturaHTML;
+      faturaDiv.style.display = "block";
+    }
+  </script>
+<script>
+
+function shkarkoFature() {
+  let emri = document.getElementById("emri").value;
+  let euro = parseFloat(document.getElementById("euro").value);
+  let kursi = 1.07;
+  let dollar = euro * kursi;
+  let data = new Date().toLocaleDateString("sq-AL");
+
+  let tekstFature = 
+    `Faturë Konvertimi\n` +
+    `------------------\n` +
+    `Emri: ${emri}\n` +
+    `Data: ${data}\n` +
+    `Shuma në Euro: €${euro.toFixed(2)}\n` +
+    `Kursi: 1 Euro = $${kursi}\n` +
+    `Shuma në Dollar: $${dollar.toFixed(2)}\n\n` +
+    `Faleminderit për përdorimin e konvertuesit tonë!`;
+
+  let blob = new Blob([tekstFature], { type: "text/plain" });
+  let link = document.createElement("a");
+  link.href = URL.createObjectURL(blob);
+  link.download = "fatura.txt";
+  link.click();
+}
+  </script>
+
+</body>
+</html>
